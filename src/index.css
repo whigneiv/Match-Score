@@ -1,0 +1,148 @@
+@import 'tailwindcss';
+
+@theme {
+  --color-app-bg: #1a1625;
+  --color-surface: #262135;
+  --color-surface-el: #322c45;
+  --color-primary: #db2777;
+  --color-primary-glow: rgba(219, 39, 119, 0.25);
+  --color-app-text: #f8fafc;
+  --color-muted: #94a3b8;
+  --color-chicle: #ff6b81;
+  --color-soft-red: #ff4757;
+}
+
+/* === BASE === */
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: #1a1625;
+  background-image:
+    radial-gradient(ellipse at 20% 0%, rgba(219, 39, 119, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at 80% 100%, rgba(219, 39, 119, 0.08) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: #f8fafc;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* === SCROLLBAR === */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(219, 39, 119, 0.15);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(219, 39, 119, 0.3);
+}
+.overflow-y-auto {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(219, 39, 119, 0.15) transparent;
+}
+
+/* === ANIMATIONS === */
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(219, 39, 119, 0.3), 0 0 12px rgba(219, 39, 119, 0.15); }
+  50% { box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.5), 0 0 20px rgba(219, 39, 119, 0.25); }
+}
+.pulse-glow {
+  animation: pulse-glow 2.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.shimmer {
+  background: linear-gradient(90deg, transparent 0%, rgba(219, 39, 119, 0.08) 50%, transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+@keyframes avatar-glow {
+  0%, 100% { box-shadow: 0 0 0 2px rgba(219, 39, 119, 0.3), 0 0 16px rgba(219, 39, 119, 0.15); }
+  50% { box-shadow: 0 0 0 3px rgba(219, 39, 119, 0.5), 0 0 24px rgba(219, 39, 119, 0.2); }
+}
+.player-avatar-ring {
+  animation: avatar-glow 2.5s ease-in-out infinite;
+  border-radius: 1rem;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-slow 3s linear infinite;
+}
+
+/* Toast notification */
+@keyframes toast-in {
+  from { opacity: 0; transform: translateY(12px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.animate-toast-in {
+  animation: toast-in 0.3s ease-out;
+}
+@keyframes toast-out {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to { opacity: 0; transform: translateY(-8px) scale(0.95); }
+}
+.animate-toast-out {
+  animation: toast-out 0.25s ease-in forwards;
+}
+
+@keyframes shine {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+.animate-shine {
+  animation: shine 3s infinite linear;
+}
+
+@keyframes pulse-slow {
+  0%, 100% { filter: drop-shadow(0 0 2px rgba(245, 158, 11, 0.2)); border-color: rgba(245, 158, 11, 0.3); }
+  50% { filter: drop-shadow(0 0 10px rgba(245, 158, 11, 0.5)); border-color: rgba(245, 158, 11, 0.6); }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 2s infinite ease-in-out;
+}
+
+/* === RETRO PIXEL REFINEMENTS === */
+.rounded-2xl {
+  border-radius: 6px !important;
+}
+.rounded-xl {
+  border-radius: 4px !important;
+}
+.rounded-lg {
+  border-radius: 3px !important;
+}
+button, input, select {
+  border-radius: 4px !important;
+}
+.shadow-xl, .shadow-lg, .shadow-md {
+  box-shadow: 3px 3px 0px 0px rgba(0, 0, 0, 0.35) !important;
+}
+.border {
+  border-width: 1.5px !important;
+}
+
