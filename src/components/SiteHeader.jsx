@@ -26,8 +26,7 @@ export default function SiteHeader() {
     <header className="sticky top-0 z-50 bg-[#1a1625]/80 backdrop-blur-xl border-b border-white/[0.04]">
       <div className="relative mx-auto w-full max-w-4xl px-3 py-2 flex items-center justify-center">
         {/* Dev Tools Button (Absolute Right) */}
-        {import.meta.env.DEV && (
-          <div className="absolute right-3" ref={devMenuRef}>
+        <div className="absolute right-3" ref={devMenuRef}>
             <button
               type="button"
               onClick={() => {
@@ -109,8 +108,7 @@ export default function SiteHeader() {
 
               </div>
             )}
-          </div>
-        )}
+        </div>
 
         {/* Centered Logo */}
         <MatchScoreLogo size="lg" />
