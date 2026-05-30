@@ -60,7 +60,7 @@ Janelas de tempo: R1 aberta por 24h; rodadas 2–22 expiram após 10 min de aber
 ## Publicação
 
 O deploy no GitHub Pages é automático via GitHub Actions a cada push no branch `master`.
-URL esperada: `https://whigneiv.github.io/match-score/`
+URL esperada: `https://whigneiv.github.io/Match-Score/`
 
 **Progresso salvo automaticamente** no `localStorage` do navegador (rodada, diamantes, matches, quiz, relógio).
 
