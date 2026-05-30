@@ -302,7 +302,7 @@ export function MatchScoreProvider({ children }) {
         const chosenMatch = candidates.find((c) => c.id === currentMatchId)
         
         let diamondsReward = 30
-        let emblemName = ''
+        let emblemName
         let isAzarao = playerRank === 4
         
         if (isAzarao) {
@@ -432,8 +432,8 @@ export function MatchScoreProvider({ children }) {
           campaignRank = 4 // Azarão
         }
 
-        let compDiamonds = 100
-        let rareId = 'trophy'
+        let compDiamonds
+        let rareId
         let campaignBadge = '🏆 Ouro Pixels'
 
         if (campaignRank === 1) {
@@ -760,12 +760,13 @@ export function MatchScoreProvider({ children }) {
   const matchAffinity = useMemo(() => {
     if (currentUser.currentRound < COMPLETED_ROUND) return null
     if (currentUser.finalAffinity) return currentUser.finalAffinity
-    let base = Math.floor(Math.random() * 16) + 82 // 82 - 97
+    const rng = getSeededRandom(`${currentUser.nick}_final_affinity`)
+    let base = Math.floor(rng() * 16) + 82 // 82 - 97
     if (currentUser.powerups?.boost) {
       base = Math.min(100, base + 4)
     }
     return base
-  }, [currentUser.currentRound, currentUser.powerups, currentUser.finalAffinity])
+  }, [currentUser.currentRound, currentUser.nick, currentUser.powerups?.boost, currentUser.finalAffinity])
 
   const completedRoundToday = useMemo(() => {
     const r = currentUser.currentRound

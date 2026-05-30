@@ -1,37 +1,48 @@
-import { useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useMatchScore } from '../context/MatchScoreContext'
-import { TOTAL_ROUNDS, ROUNDS } from '../constants/game'
 import { playClick, playCoin } from '../lib/audio'
 import { motion, AnimatePresence } from 'framer-motion'
 
 export default function WelcomePanel() {
-  const { payAndAdvance, currentUser, updateProfile, getRoundTimeStatus, virtualClock, goToInitialRound } = useMatchScore()
+  const { payAndAdvance, currentUser, updateProfile, goToInitialRound } = useMatchScore()
   const [nick, setNick] = useState(currentUser.nick || '')
-  const [avatarUrl, setAvatarUrl] = useState('')
   const [loading, setLoading] = useState(false)
   const [syncing, setSyncing] = useState(false)
   const [syncStep, setSyncStep] = useState(0)
+  const loadingTimerRef = useRef(null)
   
   // Onboarding Step State: 1 (Welcome), 2 (Rules/Rounds), 3 (Prizes), 4 (Register)
   const [step, setStep] = useState(1)
 
-  useEffect(() => {
-    if (!nick.trim()) {
-      setAvatarUrl('')
+  const trimmedNick = nick.trim()
+  const avatarUrl = trimmedNick ? `https://hubbe.biz/avatar/${encodeURIComponent(trimmedNick)}` : ''
+
+  const handleNickChange = (value) => {
+    setNick(value)
+    if (loadingTimerRef.current) {
+      clearTimeout(loadingTimerRef.current)
+    }
+    if (!value.trim()) {
       setLoading(false)
       return
     }
     setLoading(true)
-    const timer = setTimeout(() => {
-      const url = `https://hubbe.biz/avatar/${encodeURIComponent(nick)}`
-      setAvatarUrl(url)
+    loadingTimerRef.current = setTimeout(() => {
       setLoading(false)
+      loadingTimerRef.current = null
     }, 450)
-    return () => clearTimeout(timer)
-  }, [nick])
+  }
+
+  useEffect(() => (
+    () => {
+      if (loadingTimerRef.current) {
+        clearTimeout(loadingTimerRef.current)
+      }
+    }
+  ), [])
 
   const handleRegister = () => {
-    if (!nick.trim()) return
+    if (!trimmedNick) return
     playClick()
     playCoin()
     setSyncing(true)
@@ -42,9 +53,9 @@ export default function WelcomePanel() {
       setTimeout(() => {
         setSyncStep(3)
         setTimeout(() => {
-          const initialDiamonds = ((nick.length * 37) % 150) + 150
+          const initialDiamonds = ((trimmedNick.length * 37) % 150) + 150
           goToInitialRound() // Reset virtual clock to 7 AM
-          updateProfile(nick, avatarUrl, initialDiamonds)
+          updateProfile(trimmedNick, avatarUrl, initialDiamonds)
           setSyncing(false)
           payAndAdvance(1, 0)
         }, 1000)
@@ -79,21 +90,6 @@ export default function WelcomePanel() {
         </div>
       </div>
     )
-  }
-
-  // Calculate R1 start diff
-  const r1 = ROUNDS[0]
-  const targetTotalMinutes = (r1.day - 1) * 24 * 60 + r1.hour * 60
-  const currentTotalMinutes = (virtualClock.day - 1) * 24 * 60 + virtualClock.hour * 60 + virtualClock.minute
-  const diffMinutes = targetTotalMinutes - currentTotalMinutes
-  const timeStatus = getRoundTimeStatus(1, virtualClock)
-  const isLocked = timeStatus !== 'open'
-
-  let countdownText = ""
-  if (diffMinutes > 0) {
-    const diffHours = Math.floor(diffMinutes / 60)
-    const remMins = diffMinutes % 60
-    countdownText = diffHours > 0 ? `${diffHours}h ${remMins}m` : `${remMins}m`
   }
 
   const nextStep = () => {
@@ -350,10 +346,7 @@ export default function WelcomePanel() {
                   id="nick-input"
                   type="text"
                   value={nick}
-                  onChange={(e) => {
-                    setNick(e.target.value)
-                    setLoading(true)
-                  }}
+                  onChange={(e) => handleNickChange(e.target.value)}
                   placeholder="Digite seu nick..."
                   className="mt-1.5 w-full rounded-xl bg-[#1c2d3f] border border-white/[0.08] px-4 py-3 text-center text-lg font-bold text-[#e8edf2] transition focus:border-[#db2777] focus:outline-none placeholder:text-[#7a8fa3]/60"
                 />
@@ -380,7 +373,7 @@ export default function WelcomePanel() {
               </button>
               <button
                 type="button"
-                disabled={!nick.trim() || loading}
+                disabled={!trimmedNick || loading}
                 onClick={handleRegister}
                 className="flex-1 rounded-xl bg-[#db2777] hover:bg-[#ec4899] px-5 py-3 text-xs font-black uppercase tracking-wider text-white shadow-lg shadow-[#db2777]/20 transition active:scale-[0.98] disabled:cursor-not-allowed disabled:bg-white/5 disabled:text-white/20 disabled:shadow-none cursor-pointer"
               >

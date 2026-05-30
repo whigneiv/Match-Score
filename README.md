@@ -37,7 +37,7 @@ Tudo em **`/`** (`max-w-[520px]`):
 
 ```
 src/
-  constants/game.js         # regras, 36 rodadas, prêmios
+  constants/game.js         # regras, 22 rodadas, prêmios
   constants/treasureMap.js  # paradas do mapa de progresso
   constants/helpGuide.js    # conteúdo do guia de ajuda
   lib/roundTime.js          # lógica de janela de rodada
@@ -48,14 +48,19 @@ src/
   components/
 ```
 
-## Fluxo (36 rodadas · 7 dias)
+## Fluxo (22 rodadas · 7 dias)
 
 - **Rodada 1** — estreia grátis (quiz de 5 perguntas)
-- **Rodadas 2–36** — quiz + escolha de match oculto (30 💎 cada, ~1050 💎 no total)
-- **Cerimônias diárias** — ao fim dos dias 1–7 (R6, R11, R16, R21, R26, R31, R36)
+- **Rodadas 2–22** — quiz + escolha de match oculto (30 💎 cada, 630 💎 no total)
+- **Cerimônias diárias** — ao fim dos dias 1–7 (R4, R7, R10, R13, R16, R19, R22)
 - **Conclusão** — retrospectiva em stories + pódio geral + match final
 
-Janelas de tempo: R1 aberta por 24h; rodadas 2–36 expiram após 10 min de abertura (09h, 12h, 15h, 18h, 21h).
+Janelas de tempo: R1 aberta por 24h; rodadas 2–22 expiram após 10 min de abertura (09h, 14h, 19h).
+
+## Publicação
+
+O deploy no GitHub Pages é automático via GitHub Actions a cada push no branch `master`.
+URL esperada: `https://whigneiv.github.io/match-score/`
 
 **Progresso salvo automaticamente** no `localStorage` do navegador (rodada, diamantes, matches, quiz, relógio).
 

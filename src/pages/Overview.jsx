@@ -11,7 +11,6 @@ export default function Overview() {
     setShowSpin,
     setShowShop,
     setShowHelp,
-    resetGame,
     getRoundTimeStatus,
     virtualClock,
     currentRoundMeta,

@@ -9,18 +9,18 @@ describe('getGameDayFromRound', () => {
     expect(getGameDayFromRound(1)).toBe(0)
   })
 
-  it('returns 1 for rounds 2-6', () => {
+  it('returns 1 for rounds 2-4', () => {
     expect(getGameDayFromRound(2)).toBe(1)
-    expect(getGameDayFromRound(6)).toBe(1)
+    expect(getGameDayFromRound(4)).toBe(1)
   })
 
-  it('returns 7 for rounds 32-36', () => {
-    expect(getGameDayFromRound(32)).toBe(7)
-    expect(getGameDayFromRound(36)).toBe(7)
+  it('returns 7 for rounds 20-22', () => {
+    expect(getGameDayFromRound(20)).toBe(7)
+    expect(getGameDayFromRound(22)).toBe(7)
   })
 
   it('returns 8 when campaign is completed', () => {
-    expect(getGameDayFromRound(37)).toBe(8)
+    expect(getGameDayFromRound(23)).toBe(8)
   })
 })
 
@@ -41,7 +41,7 @@ describe('getTreasureStopStatus', () => {
   })
 
   it('marks treasure as done when campaign completes', () => {
-    expect(getTreasureStopStatus({ kind: 'treasure' }, 36)).toBe('locked')
-    expect(getTreasureStopStatus({ kind: 'treasure' }, 37)).toBe('done')
+    expect(getTreasureStopStatus({ kind: 'treasure' }, 22)).toBe('locked')
+    expect(getTreasureStopStatus({ kind: 'treasure' }, 23)).toBe('done')
   })
 })

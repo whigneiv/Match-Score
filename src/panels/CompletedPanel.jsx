@@ -1,6 +1,6 @@
 import { useState, useEffect, useMemo } from 'react'
 import { useMatchScore } from '../context/MatchScoreContext'
-import { HUBBE_RARES, ROUNDS, TOTAL_ROUNDS } from '../constants/game'
+import { HUBBE_RARES, TOTAL_ROUNDS } from '../constants/game'
 import { getCandidateAffinity } from '../lib/compatibility'
 import { playClick } from '../lib/audio'
 
@@ -89,7 +89,7 @@ export default function CompletedPanel() {
   const campaignRank = currentUser.campaignRank || 3
   const isAzaraoGeral = campaignRank === 4
 
-  let generalPodium = []
+  let generalPodium
   if (campaignRank === 1) {
     generalPodium = [
       { rank: 2, nick: 'Vaex', avatar: 'https://hubbe.biz/avatar/Vaex', isPlayer: false },

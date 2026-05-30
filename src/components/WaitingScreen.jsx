@@ -37,26 +37,25 @@ export default function WaitingScreen({ targetRoundId }) {
 
   // Find target round info
   const round = ROUNDS.find((r) => r.id === targetRoundId)
-  if (!round) return null
 
   // Calculate virtual time difference
-  const targetTotalMinutes = (round.day - 1) * 24 * 60 + round.hour * 60
+  const targetTotalMinutes = round ? (round.day - 1) * 24 * 60 + round.hour * 60 : 0
   const currentTotalMinutes = (virtualClock.day - 1) * 24 * 60 + virtualClock.hour * 60 + virtualClock.minute
   const diffMinutes = Math.max(0, targetTotalMinutes - currentTotalMinutes)
 
-  const [secondsLeft, setSecondsLeft] = useState(diffMinutes * 60)
+  const countdownKey = `${targetRoundId}:${diffMinutes}`
+  const [timerState, setTimerState] = useState(() => ({ key: countdownKey, elapsedSeconds: 0 }))
 
   useEffect(() => {
-    setSecondsLeft(diffMinutes * 60)
-  }, [diffMinutes])
-
-  useEffect(() => {
-    if (secondsLeft <= 0) return
+    const startedAt = Date.now()
     const interval = setInterval(() => {
-      setSecondsLeft((prev) => Math.max(0, prev - 1))
+      setTimerState({
+        key: countdownKey,
+        elapsedSeconds: Math.floor((Date.now() - startedAt) / 1000),
+      })
     }, 1000)
     return () => clearInterval(interval)
-  }, [secondsLeft])
+  }, [countdownKey])
 
   const formatCountdown = (totalSecs) => {
     if (totalSecs <= 0) return "Carregando rodada..."
@@ -70,9 +69,12 @@ export default function WaitingScreen({ targetRoundId }) {
     return `${mins}m ${String(secs).padStart(2, '0')}s`
   }
 
+  const elapsedSeconds = timerState.key === countdownKey ? timerState.elapsedSeconds : 0
+  const secondsLeft = Math.max(0, diffMinutes * 60 - elapsedSeconds)
   const countdownText = formatCountdown(secondsLeft)
 
   const isR1 = targetRoundId === 1
+  if (!round) return null
 
   return (
     <div className="py-6 text-center space-y-5 animate-fade-in text-left max-w-sm mx-auto w-full">

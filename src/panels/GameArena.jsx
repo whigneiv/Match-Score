@@ -21,7 +21,6 @@ export default function GameArena() {
     setActiveQuestionIndex,
     hiddenOptions,
     selectedCandidateId,
-    showReveal,
     selectCandidate,
     prepareHiddenCandidates,
     getRoundTimeStatus,
@@ -30,8 +29,8 @@ export default function GameArena() {
     ceremonyData,
     claimDailyReward,
     revealedCandidateIds,
-    useEspiarCharge,
-    useMudarVibeCharge,
+    useEspiarCharge: consumeEspiarCharge,
+    useMudarVibeCharge: consumeMudarVibeCharge,
     enterRound,
   } = useMatchScore()
 
@@ -59,7 +58,7 @@ export default function GameArena() {
     const { day, playerRank, diamondsReward, emblemName, isAzarao, matchNick } = ceremonyData
 
     // Define mock podium based on playerRank
-    let podium = []
+    let podium
     if (playerRank === 1) {
       podium = [
         { rank: 2, nick: 'Pandora', avatar: 'https://hubbe.biz/avatar/Pandora', isPlayer: false },
@@ -331,7 +330,7 @@ export default function GameArena() {
               {round >= 2 && (currentUser.powerups?.mudarVibeCharges || 0) > 0 && (
                 <button
                   type="button"
-                  onClick={() => { playClick(); useMudarVibeCharge() }}
+                  onClick={() => { playClick(); consumeMudarVibeCharge() }}
                   className="w-full rounded-xl border border-violet-500/30 bg-violet-500/10 py-2.5 text-xs font-bold text-violet-300 hover:bg-violet-500/20 transition cursor-pointer flex items-center justify-center gap-2"
                 >
                   <span>🌀</span>
@@ -473,7 +472,7 @@ export default function GameArena() {
                           {canSpy && (
                             <button
                               type="button"
-                              onClick={(e) => { e.stopPropagation(); playClick(); useEspiarCharge(opt.candidate.id) }}
+                              onClick={(e) => { e.stopPropagation(); playClick(); consumeEspiarCharge(opt.candidate.id) }}
                               className="shrink-0 rounded-lg border border-cyan-400/30 bg-cyan-400/10 px-2 py-1 text-[10px] font-black text-cyan-400 hover:bg-cyan-400/20 transition cursor-pointer"
                             >
                               👁️ Espiar

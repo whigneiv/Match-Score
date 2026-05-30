@@ -7,7 +7,6 @@ export default function SiteHeader() {
   const {
     currentUser,
     jumpToRound,
-    advanceVirtualTime,
   } = useMatchScore()
 
   const [devMenuOpen, setDevMenuOpen] = useState(false)
